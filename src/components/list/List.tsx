@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function List(props: any) {
     const [items, setItems] = useState<any[]>([]);
     const [favorite, setFavorite] = useState<any[]>([]);
-    
+
     useEffect(() => {
         fetch(`https://api.themoviedb.org/3/search/movie?api_key=${env.API_KEY}&query=${props.query}`)
             .then(res => res.json())
@@ -18,25 +18,22 @@ function List(props: any) {
     }, [props.query])
 
     function saveFavorite(item: any) {
-       // console.log([localStorage.getItem('favoritos')]);
-       
-        const value = localStorage.getItem('favoritos');
-         
-        console.log(item)
-        if(!value){
-            console.log("vacio",item);
-            setFavorite(items => [...items, item])
+        // console.log([localStorage.getItem('favoritos')]);
+        const valueListNow = localStorage.getItem('favoritos');
+        if (!valueListNow) {
+
+            setFavorite([item]);
             localStorage.setItem('favoritos', JSON.stringify([item]));
-        
-        }else{
-            let newValue = JSON.parse(value);
+
+        } else {
+
+            let newValue = JSON.parse(valueListNow);
             newValue.push(item);
-            //aqui hay que decir si existe pongo lo que existe mas lo que esta nuevo 
-            setFavorite(items => newValue)
-            localStorage.setItem('favoritos', JSON.stringify(favorite));
-        
+            setFavorite(newValue);
+            localStorage.setItem('favoritos', JSON.stringify(newValue));
+
         }
-       
+
     }
 
     function deleteFavorite(item: any) {
@@ -63,7 +60,7 @@ function List(props: any) {
                                             onClick={
                                                 () => saveFavorite(item)
                                             }
-                                            >Añadir a favoritos
+                                        >Añadir a favoritos
                                         </button>
                                     </div>
                                 </div>
@@ -80,10 +77,10 @@ function List(props: any) {
                                     <h4>{favorit.title}</h4>
                                     <p>{favorit.overview}</p>
                                     <img src={imagePath + favorit.poster_path} alt="" />
-                                        <button className='btn btn-success' onClick={
-                                                () => deleteFavorite(favorit.id)}
-                                            >Eliminar de favoritos
-                                        </button>
+                                    <button className='btn btn-success' onClick={
+                                        () => deleteFavorite(favorit.id)}
+                                    >Eliminar de favoritos
+                                    </button>
                                 </div>
                             </ListGroup.Item>
                         ))}
