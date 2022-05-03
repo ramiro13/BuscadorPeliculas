@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import env from "react-dotenv";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { v4 as uuidv4 } from 'uuid';
 
 function List(props: any) {
     const [items, setItems] = useState<any[]>([]);
     const [favorite, setFavorite] = useState<any[]>([]);
 
     useEffect(() => {
-        if (props.query && props.query != '') {
+        if (props.query && props.query !== '') {
             fetch(`https://api.themoviedb.org/3/search/movie?api_key=${env.API_KEY}&query=${props.query}`)
                 .then(res => res.json())
                 .then(
@@ -16,7 +17,7 @@ function List(props: any) {
                         setItems(result.results);
                     }
                 ).catch((e) => {
-                    console.log(e);
+                    console.log("Error themoviedb",e);
                 })
         } else {
             setItems([])
@@ -25,28 +26,25 @@ function List(props: any) {
     }, [props.query])
 
     function saveFavorite(item: any) {
-        // console.log([localStorage.getItem('favoritos')]);
+        //si existe el id no duplicar
         const valueListNow = localStorage.getItem('favoritos');
+  
         if (!valueListNow) {
-
+            item.id_delete = uuidv4();
             setFavorite([item]);
             localStorage.setItem('favoritos', JSON.stringify([item]));
 
         } else {
-
+            item.id_delete = uuidv4();
             let newValue = JSON.parse(valueListNow);
             newValue.push(item);
             setFavorite(newValue);
             localStorage.setItem('favoritos', JSON.stringify(newValue));
 
         }
-
+          
     }
 
-    function deleteFavorite(item: any) {
-        favorite.filter(() => item.id !== item.id);
-        localStorage.setItem('favoritos', JSON.stringify(favorite));
-    }
 
     const imagePath = 'https://www.themoviedb.org/t/p/w220_and_h330_face/';
 
@@ -84,10 +82,6 @@ function List(props: any) {
                                     <h4>{favorit.title}</h4>
                                     <p>{favorit.overview}</p>
                                     <img src={imagePath + favorit.poster_path} alt="" />
-                                    <button className='btn btn-success' onClick={
-                                        () => deleteFavorite(favorit.id)}
-                                    >Eliminar de favoritos
-                                    </button>
                                 </div>
                             </ListGroup.Item>
                         ))}
