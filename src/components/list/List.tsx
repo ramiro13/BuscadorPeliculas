@@ -8,13 +8,20 @@ function List(props: any) {
     const [favorite, setFavorite] = useState<any[]>([]);
 
     useEffect(() => {
-        fetch(`https://api.themoviedb.org/3/search/movie?api_key=${env.API_KEY}&query=${props.query}`)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    setItems(result.results);
-                }
-            )
+        if (props.query && props.query != '') {
+            fetch(`https://api.themoviedb.org/3/search/movie?api_key=${env.API_KEY}&query=${props.query}`)
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        setItems(result.results);
+                    }
+                ).catch((e) => {
+                    console.log(e);
+                })
+        } else {
+            setItems([])
+        }
+
     }, [props.query])
 
     function saveFavorite(item: any) {
