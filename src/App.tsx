@@ -6,7 +6,8 @@ function App() {
       <div className='container'>
           <div className="text-center mt-5">
             <h1>Hola</h1>
-            <a className='btn btn-info mt-3' href="search">Busca tu pelicula favorita</a>
+            <a className='btn btn-info m-3' href="search">Busca tu pelicula favorita</a>
+            <a className='btn btn-info m-3' href="favs">Ver peliculas favorita</a>
           </div>
       </div>
   );
