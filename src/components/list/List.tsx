@@ -1,12 +1,13 @@
-import React,{ useState, useEffect } from 'react';
-import { ListGroup } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Button, ListGroup } from 'react-bootstrap';
 import env from "react-dotenv";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Pelicula } from '../../model/Pelicula';
+import { Pelicula } from '../../interface/Pelicula';
 
 function List(props: any) {
     const [items, setItems] = useState<Pelicula[]>([]);
-    const [favorite, setFavorite] = useState<Pelicula[]>([]);
+    const favoritos: Array<Pelicula> = JSON.parse(localStorage.getItem('favoritos') ?? 'null');
+    const [favorite, setFavorite] = useState<Pelicula[]>(favoritos);
 
     useEffect(() => {
         if (props.query && props.query !== '') {
@@ -17,7 +18,7 @@ function List(props: any) {
                         setItems(result.results);
                     }
                 ).catch((e) => {
-                    console.log("Error themoviedb",e);
+                    console.log("Error themoviedb", e);
                 })
         } else {
             setItems([])
@@ -25,22 +26,23 @@ function List(props: any) {
 
     }, [props.query])
 
+
     function saveFavorite(item: Pelicula) {
         //si existe el id no duplicar
         const valueListNow = localStorage.getItem('favoritos');
-  
+
         if (!valueListNow) {
             setFavorite([item]);
             localStorage.setItem('favoritos', JSON.stringify([item]));
-
         } else {
-            let newValue = JSON.parse(valueListNow);
-            newValue.push(item);
-            setFavorite(newValue);
-            localStorage.setItem('favoritos', JSON.stringify(newValue));
-
+            const ifexist = favoritos.find(fav => fav.id === item.id);
+            if (!ifexist) {
+                let newValue = JSON.parse(valueListNow);
+                newValue.push(item);
+                setFavorite(newValue);
+                localStorage.setItem('favoritos', JSON.stringify(newValue));
+            }
         }
-          
     }
 
 
@@ -59,12 +61,12 @@ function List(props: any) {
                                     <p>{item.overview}</p>
                                     <img src={imagePath + item.poster_path} alt="" />
                                     <div className="text-center m-2">
-                                        <button className='btn btn-success'
+                                        <Button className='btn btn-success'
                                             onClick={
                                                 () => saveFavorite(item)
                                             }
                                         >Añadir a favoritos
-                                        </button>
+                                        </Button>
                                     </div>
                                 </div>
                             </ListGroup.Item>
@@ -79,7 +81,7 @@ function List(props: any) {
                                 <div className="text-center">
                                     <h4>{favorit.title}</h4>
                                     <p>{favorit.overview}</p>
-                                    <img src={imagePath + favorit.poster_path} alt="" />
+                                    <img src={imagePath + favorit.poster_path} alt="picture" />
                                 </div>
                             </ListGroup.Item>
                         ))}
