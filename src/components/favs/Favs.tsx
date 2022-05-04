@@ -1,4 +1,4 @@
-import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal } from 'react';
+import React , { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -19,33 +19,35 @@ function Favs() {
     }
 
     return (
-        <div className="container">
-            <a className='btn btn-info m-3' href="/">Home</a>
-            <div className="row">
-                <div className="col text-center">
-                    <h2>Favoritos</h2>
-                    <ListGroup>
-                        {JSON.parse(favoritos)?.map((favorit: { id: Key | null | undefined; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; overview: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; poster_path: string; }) => (
-                            <ListGroup.Item key={favorit.id}>
-                                <div className="text-center">
-                                    <h4>{favorit.title}</h4>
-                                    <p>{favorit.overview}</p>
-                                    <img src={imagePath + favorit.poster_path} alt="" />
+        <>
+            <div className="container">
+                <a className='btn btn-info m-3' href="/">Home</a>
+                <div className="row">
+                    <div className="col text-center">
+                        <h2>Favoritos</h2>
+                        <ListGroup>
+                            {JSON.parse(favoritos).map((favorit: { id: Key | null | undefined; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; overview: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; poster_path: string; }) => (
+                                <ListGroup.Item key={favorit.id}>
                                     <div className="text-center">
-                                        <button className='btn btn-success m-3'
-                                            onClick={
-                                                () => seeThisFilm(favorit)
-                                            }
-                                        >Ver 
-                                        </button>
+                                        <h4>{favorit.title}</h4>
+                                        <p>{favorit.overview}</p>
+                                        <img src={imagePath + favorit.poster_path} alt="" />
+                                        <div className="text-center">
+                                            <button className='btn btn-success m-3'
+                                                onClick={
+                                                    () => seeThisFilm(favorit)
+                                                }
+                                            > Ver 
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </ListGroup.Item>
-                        ))}
-                    </ListGroup>
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    </div>
                 </div>
-            </div>
-        </div >
+            </div >
+        </>
     );
 }
 export default Favs;

@@ -1,8 +1,10 @@
 import {useState} from 'react';
+import env from "react-dotenv";
 import List from '../list/List';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Search() {
+  const tittle = env.APP_NAME;
   const [search, setSearch] = useState<any>("");
   const handleChange = (event: { target: HTMLInputElement; }) => {setSearch({ value: event.target.value })};
 
