@@ -2,10 +2,11 @@ import React,{ useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import env from "react-dotenv";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Pelicula } from '../../model/Pelicula';
 
 function List(props: any) {
-    const [items, setItems] = useState<any[]>([]);
-    const [favorite, setFavorite] = useState<any[]>([]);
+    const [items, setItems] = useState<Pelicula[]>([]);
+    const [favorite, setFavorite] = useState<Pelicula[]>([]);
 
     useEffect(() => {
         if (props.query && props.query !== '') {
@@ -24,7 +25,7 @@ function List(props: any) {
 
     }, [props.query])
 
-    function saveFavorite(item: any) {
+    function saveFavorite(item: Pelicula) {
         //si existe el id no duplicar
         const valueListNow = localStorage.getItem('favoritos');
   
