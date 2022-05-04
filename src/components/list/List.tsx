@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import env from "react-dotenv";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { v4 as uuidv4 } from 'uuid';
+
 
 function List(props: any) {
     const [items, setItems] = useState<any[]>([]);
@@ -30,12 +30,10 @@ function List(props: any) {
         const valueListNow = localStorage.getItem('favoritos');
   
         if (!valueListNow) {
-            item.id_delete = uuidv4();
             setFavorite([item]);
             localStorage.setItem('favoritos', JSON.stringify([item]));
 
         } else {
-            item.id_delete = uuidv4();
             let newValue = JSON.parse(valueListNow);
             newValue.push(item);
             setFavorite(newValue);
