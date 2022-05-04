@@ -1,3 +1,4 @@
+//esto podriamos mejorarlo com camelCase! :D 
 export interface Pelicula {
     adult:             boolean;
     backdrop_path:     string;
